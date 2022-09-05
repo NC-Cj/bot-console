@@ -16,6 +16,17 @@ class MyDocker:
         self.client = DockerClient(base_url=docker_url)
 
 
+    @staticmethod
+    def get_docker_container_logs(containers: list):
+        with contextlib.suppress(TypeError):
+            return containers[0].logs().decode('utf-8')
+
+    @staticmethod
+    def docker_stop_container(containers: list):
+        status = containers[0].status
+        if status != "exited":
+            containers[0].stop()
+
     def docker_run(self, *args, **kwargs):
         return self.client.containers.run(*args, **kwargs)
 
