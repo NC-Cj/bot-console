@@ -13,7 +13,6 @@ def make_dir(make_dir_path):
 
 
 def getLogHandler():
-    # 日志地址
     log_dir_name = "mpt-app-logs"
     log_file_name = 'logger-' + time.strftime('%Y-%m-%d', time.localtime(time.time())) + '.log'
     log_file_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)) + os.sep + log_dir_name
