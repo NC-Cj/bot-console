@@ -1,7 +1,6 @@
 from flask import make_response, send_file, jsonify
 
 from config import CONTAINER_LOG_PATH, docker_
-from modules import app
 from modules.tools import post_params, get_s3_logs, update_source, to_format
 from pages.log import log_blue
 
