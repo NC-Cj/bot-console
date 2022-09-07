@@ -1,7 +1,11 @@
 import time
+import traceback
 
+from loguru import logger
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError, ResourceClosedError, OperationalError
+
+from src.depend import load_excel_dict
 
 
 class Base:
@@ -51,6 +55,38 @@ class Base:
             finally:
                 if conn:
                     conn.close()
+
+    def _engine_execute(self, stmt, ignore_errors=False, data=None, convert_to_list=True):
+        engine = self._init_db()
+        retries = 0
+        while True:
+            try:
+                res = engine.execute(stmt, data) if data else engine.execute(stmt)
+                if convert_to_list:
+                    res = list(res)
+            except ResourceClosedError:
+                return
+            except OperationalError as e:
+                if ignore_errors:
+                    return
+
+                retries += 1
+                if retries >= 5:
+                    raise e
+
+                self.sleep(1)
+                continue
+            except SQLAlchemyError as e:
+                if ignore_errors:
+                    return
+                else:
+                    raise e
+            else:
+                return res
+
+    @property
+    def from_engine(self):
+        return self._init_db(True)
 
 
 class Init(Base):
