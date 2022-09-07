@@ -51,3 +51,20 @@ class Base:
             finally:
                 if conn:
                     conn.close()
+
+
+class Init(Base):
+
+    def __init__(self, url=None):
+        super().__init__()
+        self.conn_str = url
+
+    def create_tables(self, models: list):
+        for table in models:
+            try:
+                table.create(self.from_engine)
+            except Exception as e:
+                logger.error(f'Error: {e}\nfrom table: {table.name}')
+                traceback.print_exc()
+            else:
+                logger.success(f'Created: {table.name}')
