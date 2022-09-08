@@ -21,14 +21,6 @@ def get_info(types):
     return jsonify(source)
 
 
-def search_device_information(value):
-    pass
-
-
-def record_group_info(mac):
-    pass
-
-
 app.register_blueprint(action_blue)
 app.register_blueprint(cmd_blue)
 app.register_blueprint(log_blue)
