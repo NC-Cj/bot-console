@@ -104,3 +104,14 @@ class Init(Base):
                 traceback.print_exc()
             else:
                 logger.success(f'Created: {table.name}')
+
+    def migrate_data(self, path):
+        # TODO: 有问题
+        try:
+            values = load_excel_dict(path)
+            self._engine_execute(self.table.insert(), data=values)
+        except Exception as e:
+            logger.error(f'Error: {e}\nfrom table: {self.table.name}')
+            traceback.print_exc()
+        else:
+            logger.success(f'Write complete: {self.table.name}')
