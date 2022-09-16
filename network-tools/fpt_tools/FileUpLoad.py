@@ -66,7 +66,7 @@ if __name__ == '__main__':
     signal.signal(signal.SIGTERM, signal_handler)  # 请求中止进程，kill命令缺省发送
     ftpUp = CFtpOperCls(ipaddr, iPort, userName, userPwd)
     ftpUp.ftpConnect()
-    while (1 == g_isQuit):
+    while 1 == g_isQuit:
         # 获取源目录文件
         fileList = getallfilesofwalk(srcFilePath)
         for i, file in enumerate(fileList):
