@@ -1,7 +1,9 @@
+# FTP客户端上传类
 from ftplib import FTP
 
 
 class CFtpOperCls(object):
+    """构造函数"""
 
     def __init__(self, ftpserver, port, usrname, pwd):
         self.ftpserver = ftpserver
@@ -10,6 +12,7 @@ class CFtpOperCls(object):
         self.pwd = pwd
         self.ftp = self.ftpConnect()
 
+    # ftp连接
     def ftpConnect(self):
         ftp = FTP()
         try:
