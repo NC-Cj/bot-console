@@ -1,13 +1,14 @@
 from sqlalchemy import Table, MetaData, Integer, String, Column
 
-from app.common.db import DataBase
+from app.models.db import DataBase
 
 
 class City(DataBase):
 
     def __init__(self):
         super().__init__()
-        self.conn_str = 'sqlite:///city.db'
+        # self.conn_str = 'sqlite:///city.db'
+        self.conn_str = "mysql+pymysql://root:admin@localhost:3306/test_db"
         self.table = Table(
             'city', MetaData(),
             Column('id', Integer, primary_key=True, autoincrement=True),
@@ -15,4 +16,7 @@ class City(DataBase):
             Column('city_id', String(10))
         )
 
-# City().test()
+    def get_city_id(self, c):
+        return self.engine_execute(
+            self.table.select().with_only_columns(self.table.c.city_id).where(self.table.c.city_name == c)
+        )
