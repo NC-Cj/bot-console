@@ -38,4 +38,4 @@ class Spider:
         print(result)
 
 
-print(Spider().get_virus('江西省'))
+# print(Spider().get_virus('江西省'))
