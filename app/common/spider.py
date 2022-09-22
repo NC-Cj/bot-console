@@ -5,20 +5,21 @@ class Spider:
     token = "EOk6j38PELxUwJy8"
     virus_url = "https://v2.alapi.cn/api/springTravel/risk"
     healthy_travel_url = "https://v2.alapi.cn/api/springTravel/query"
-    params = {"token": token}
 
     def __init__(self):
-        pass
+        self.headers = {'Content-Type': "application/x-www-form-urlencoded"}
 
-    def get_virus(self, province=None, city=None, county=None):
+    def help_(self):
+        return f'🚩 命令格式：/命令名称\n🚩 注意：命令带有下划线请忽略填写\n🚩 命令列表：{dir(self)[26:]}'
+
+    def query_virus_cities(self, province, city=None, county=None):
         payload = {
             'token': self.token,
             'province': province,
             'city': city,
             "country": county
         }
-        headers = {'Content-Type': "application/x-www-form-urlencoded"}
-        result = request('POST', self.virus_url, params=payload, headers=headers).json()
+        result = request('POST', self.virus_url, params=payload, headers=self.headers).json()
 
         if 10 > len(result['data']['high_list']) > 0:
             high_list = result['data']['high_list']
@@ -38,4 +39,5 @@ class Spider:
         print(result)
 
 
-# print(Spider().get_virus('江西省'))
+# print(Spider().get_healthy_travel('苏州', '南昌'))
+script = Spider()
