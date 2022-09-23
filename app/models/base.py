@@ -13,8 +13,7 @@ class DataBase:
     def _init_db(self, conn=False):
         if self.db_engine is None:
             try:
-                self.db_engine = create_engine(self.conn_str, pool_size=1, max_overflow=0, pool_recycle=3600,
-                                               pool_pre_ping=True)
+                self.db_engine = create_engine(self.conn_str, pool_size=1, max_overflow=0, pool_recycle=3600, pool_pre_ping=True)
             except TypeError:
                 self.db_engine = create_engine(self.conn_str)
             if getattr(self, 'table', None) is not None:

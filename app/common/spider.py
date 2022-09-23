@@ -12,6 +12,9 @@ class Spider:
             'help',
             '疫情查询',
             '出行防疫',
+            '天气',
+            '快递',
+            '早报',
         ]
 
     def help_(self):
@@ -130,6 +133,3 @@ class Spider:
 
 
 script = Spider()
-# print(script.help_())
-# print(Spider().get_healthy_travel('苏州', '南昌'))
-# print(script.get_healthy_travel('苏州', '南昌'))

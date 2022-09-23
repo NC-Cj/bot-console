@@ -1,6 +1,6 @@
 from sqlalchemy import Table, MetaData, Integer, String, Column
 
-from app.models.db import DataBase
+from app.models.base import DataBase
 
 
 class City(DataBase):
@@ -8,7 +8,7 @@ class City(DataBase):
     def __init__(self):
         super().__init__()
         # self.conn_str = 'sqlite:///city.db'
-        self.conn_str = "mysql+pymysql://root:admin@localhost:3306/test_db"
+        self.conn_str = "mysql+pymysql://root:admin@localhost:3306/new_schema"
         self.table = Table(
             'city', MetaData(),
             Column('id', Integer, primary_key=True, autoincrement=True),

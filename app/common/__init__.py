@@ -1,1 +1,1 @@
-from .cmd import cmd
+from .spider import script
