@@ -1,5 +1,7 @@
 from requests import request
 
+from app.models.city import City
+
 
 class Spider:
     token = "EOk6j38PELxUwJy8"
@@ -8,11 +10,20 @@ class Spider:
 
     def __init__(self):
         self.headers = {'Content-Type': "application/x-www-form-urlencoded"}
+        self.command_list = [
+            'help',
+            '疫情查询',
+            '出行防疫',
+        ]
 
     def help_(self):
-        return f'🚩 命令格式：/命令名称\n🚩 注意：命令带有下划线请忽略填写\n🚩 命令列表：{dir(self)[26:]}'
+        return f'🚩 命令格式：/命令名称\n🚩 注意：命令带有下划线请忽略填写\n🚩 命令列表：{self.command_list}'
 
     def query_virus_cities(self, province, city=None, county=None):
+        """
+        疫情风险地区查询
+        :docs: https://alapi.cn/api/view/106
+        """
         payload = {
             'token': self.token,
             'province': province,
