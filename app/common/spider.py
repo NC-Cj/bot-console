@@ -21,17 +21,18 @@ class Spider:
         }
         result = request('POST', self.virus_url, params=payload, headers=self.headers).json()
 
-        if 10 > len(result['data']['high_list']) > 0:
-            high_list = result['data']['high_list']
-            msg = ''.join(f"{row['area_name']} - 高风险社区：{len(row['communitys'])}个\n" for row in high_list)
-        elif city is None:
-            msg = f"{province} 存在高风险地区：{result['data']['high_count']}个\n"
-        else:
-            msg = f"{city} 存在高风险地区：{result['data']['high_count']}个\n"
+        if result['code'] == 200:
+            if 10 > len(result['data']['high_list']) > 0:
+                high_list = result['data']['high_list']
+                msg = ''.join(f"{row['area_name']} - ⛔ 高风险社区：{len(row['communitys'])}个\n" for row in high_list)
+            elif city is None:
+                msg = f"{province} ⛔ 存在高风险地区：{result['data']['high_count']}个\n"
+            else:
+                msg = f"{city} ⛔ 存在高风险地区：{result['data']['high_count']}个\n"
 
-        msg = f"{msg}存在中风险地区：{result['data']['middle_count']}个\n最新发布时间：{result['data']['end_update_time']}"
+            msg = f"{msg}⚠ 存在中风险地区：{result['data']['middle_count']}个\n最新发布时间：{result['data']['end_update_time']}"
 
-        return msg
+            return msg
 
     def get_healthy_travel(self):
         result = request('get', self.virus_url, params=self.params).json()
