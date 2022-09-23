@@ -5,8 +5,6 @@ from app.models.city import City
 
 class Spider:
     token = "EOk6j38PELxUwJy8"
-    virus_url = "https://v2.alapi.cn/api/springTravel/risk"
-    healthy_travel_url = "https://v2.alapi.cn/api/springTravel/query"
 
     def __init__(self):
         self.headers = {'Content-Type': "application/x-www-form-urlencoded"}
@@ -24,13 +22,14 @@ class Spider:
         疫情风险地区查询
         :docs: https://alapi.cn/api/view/106
         """
+        url = "https://v2.alapi.cn/api/springTravel/risk"
         payload = {
             'token': self.token,
             'province': province,
             'city': city,
             "country": county
         }
-        result = request('POST', self.virus_url, params=payload, headers=self.headers).json()
+        result = request('POST', url, params=payload, headers=self.headers).json()
 
         if result['code'] == 200:
             if 10 > len(result['data']['high_list']) > 0:
@@ -54,12 +53,13 @@ class Spider:
         from_id = table.get_city_id(from_)
         to_id = table.get_city_id(to)
 
+        url = "https://v2.alapi.cn/api/springTravel/query"
         payload = {
             'token': self.token,
             'from': from_id,
             'to': to_id
         }
-        result = request('POST', self.healthy_travel_url, params=payload, headers=self.headers).json()
+        result = request('POST', url, params=payload, headers=self.headers).json()
         if result['code'] == 200:
             out_desc = result['data']['from_info']['out_desc']
             out_code_name = result['data']['from_info']['health_code_name']
