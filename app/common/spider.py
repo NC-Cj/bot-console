@@ -20,6 +20,10 @@ class Spider:
     def help_(self):
         return f'🚩 命令格式：/命令名称\n🚩 注意：命令带有下划线请忽略填写\n🚩 命令列表：{self.command_list}'
 
+    def other(self, key):
+        url = f'https://cn.bing.com/search?q="{key}"&FORM=BESBTB'
+        return f'😢没有该指令，已自动根据你的指令搜索到如下内容，请点击查看\n{url}'
+    
     def query_virus_cities(self, province, city=None, county=None):
         """
         疫情风险地区查询
@@ -32,9 +36,10 @@ class Spider:
             'city': city,
             "country": county
         }
-        result = request('POST', url, params=payload, headers=self.headers).json()
 
+        result = request('POST', url, params=payload, headers=self.headers).json()
         if result['code'] == 200:
+
             if 10 > len(result['data']['high_list']) > 0:
                 high_list = result['data']['high_list']
                 msg = ''.join(f"{row['area_name']} - ⛔ 高风险社区：{len(row['communitys'])}个\n" for row in high_list)
@@ -42,7 +47,6 @@ class Spider:
                 msg = f"{province} ⛔ 存在高风险地区：{result['data']['high_count']}个\n"
             else:
                 msg = f"{city} ⛔ 存在高风险地区：{result['data']['high_count']}个\n"
-
             msg = f"{msg}⚠ 存在中风险地区：{result['data']['middle_count']}个\n最新发布时间：{result['data']['end_update_time']}"
 
             return msg
@@ -62,12 +66,14 @@ class Spider:
             'from': from_id,
             'to': to_id
         }
+
         result = request('POST', url, params=payload, headers=self.headers).json()
         if result['code'] == 200:
             out_desc = result['data']['from_info']['out_desc']
             out_code_name = result['data']['from_info']['health_code_name']
             in_desc = result['data']['to_info']['low_in_desc']
             in_code_name = result['data']['to_info']['health_code_name']
+
             return f"🌏 {from_}出站：\n📕 健康码：{out_code_name}\n🚆 {out_desc}\n🌏 {to}进站：\n📕 健康码：{in_code_name}\n🚆 {in_desc}\n"
 
     def get_weather(self, city=None):
@@ -80,8 +86,8 @@ class Spider:
             'token': self.token,
             'city': city
         }
-        result = request('POST', url, params=payload, headers=self.headers).json()
 
+        result = request('POST', url, params=payload, headers=self.headers).json()
         if result['code'] == 200:
             hour_list = result['data']['hour']
             msg = ''.join(f"⏰ {row['time'].split()[-1]} - {row['wea']} - {row['temp']}°\n" for row in hour_list)
@@ -100,10 +106,9 @@ class Spider:
             'number': number,
             'order': 'asc'
         }
-        result = request('POST', url, params=payload, headers=self.headers).json()
 
+        result = request('POST', url, params=payload, headers=self.headers).json()
         if result['code'] == 200:
-            print(result)
             new_state = result['data']['info'][-1]
             msg = f"⏰ 最新更新时间：{new_state['time']}\n📦 {new_state['content']}"
 
@@ -119,8 +124,8 @@ class Spider:
             'token': self.token,
             'format': 'json'
         }
-        result = request('POST', url, params=payload, headers=self.headers).json()
 
+        result = request('POST', url, params=payload, headers=self.headers).json()
         if result['code'] == 200:
             image_url = result['data']['image']
             c = request('GET', image_url).content
