@@ -67,12 +67,24 @@ class Spider:
             in_code_name = result['data']['to_info']['health_code_name']
             return f"🌏 {from_}出站：\n📕 健康码：{out_code_name}\n🚆 {out_desc}\n🌏 {to}进站：\n📕 健康码：{in_code_name}\n🚆 {in_desc}\n"
 
-    def get_weather(self):
+    def get_weather(self, city=None):
         """
         国内天气查询
         :docs: https://alapi.cn/api/view/65
         """
-        pass
+        url = 'https://v2.alapi.cn/api/tianqi'
+        payload = {
+            'token': self.token,
+            'city': city
+        }
+        result = request('POST', url, params=payload, headers=self.headers).json()
+
+        if result['code'] == 200:
+            hour_list = result['data']['hour']
+            msg = ''.join(f"⏰ {row['time'].split()[-1]} - {row['wea']} - {row['temp']}°\n" for row in hour_list)
+            msg = f'今日早晨-明日早晨\n{msg}'
+
+            return msg
 
     def query_logistics(self):
         """
