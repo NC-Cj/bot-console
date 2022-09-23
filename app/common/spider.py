@@ -86,7 +86,22 @@ class Spider:
         每日60秒早报
         :docs: https://alapi.cn/api/view/93
         """
-        pass
+        url = 'https://v2.alapi.cn/api/zaobao'
+        payload = {
+            'token': self.token,
+            'format': 'json'
+        }
+        result = request('POST', url, params=payload, headers=self.headers).json()
+
+        if result['code'] == 200:
+            image_url = result['data']['image']
+            c = request('GET', image_url).content
+            filename = r'D:\GI\network-tools\images\zaobao.png'
+
+            with open(filename, 'wb') as f:
+                f.write(c)
+
+            return filename
 
 
 script = Spider()
