@@ -86,12 +86,25 @@ class Spider:
 
             return msg
 
-    def query_logistics(self):
+    def query_logistics(self, number):
         """
         快递查询
         :docs: https://alapi.cn/api/view/63
         """
-        pass
+        url = 'https://v2.alapi.cn/api/kd'
+        payload = {
+            'token': self.token,
+            'number': number,
+            'order': 'asc'
+        }
+        result = request('POST', url, params=payload, headers=self.headers).json()
+
+        if result['code'] == 200:
+            print(result)
+            new_state = result['data']['info'][-1]
+            msg = f"⏰ 最新更新时间：{new_state['time']}\n📦 {new_state['content']}"
+
+            return msg
 
     def get_news_to_day(self):
         """
