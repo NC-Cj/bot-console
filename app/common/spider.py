@@ -45,11 +45,25 @@ class Spider:
 
             return msg
 
-    def get_healthy_travel(self):
-        result = request('get', self.virus_url, params=self.params).json()
-        result = request('get', 'https://v2.alapi.cn/api/springTravel/city', params=self.params).json()
-        print(result)
+    def get_healthy_travel(self, from_, to):
+        """
+        出行防疫政策指南
+        :docs: https://alapi.cn/api/view/87
+        """
+        table = City()
+        from_id = table.get_city_id(from_)
+        to_id = table.get_city_id(to)
 
+        payload = {
+            'token': self.token,
+            'from': from_id,
+            'to': to_id
+        }
+        result = request('POST', self.healthy_travel_url, params=payload, headers=self.headers).json()
+        if result['code'] == 200:
+            out_desc = result['data']['from_info']['out_desc']
+            out_code_name = result['data']['from_info']['health_code_name']
+            in_desc = result['data']['to_info']['low_in_desc']
+            in_code_name = result['data']['to_info']['health_code_name']
+            return f"🌏 {from_}出站：\n📕 健康码：{out_code_name}\n🚆 {out_desc}\n🌏 {to}进站：\n📕 健康码：{in_code_name}\n🚆 {in_desc}\n"
 
-# print(Spider().get_healthy_travel('苏州', '南昌'))
-script = Spider()
