@@ -67,3 +67,29 @@ class Spider:
             in_code_name = result['data']['to_info']['health_code_name']
             return f"🌏 {from_}出站：\n📕 健康码：{out_code_name}\n🚆 {out_desc}\n🌏 {to}进站：\n📕 健康码：{in_code_name}\n🚆 {in_desc}\n"
 
+    def get_weather(self):
+        """
+        国内天气查询
+        :docs: https://alapi.cn/api/view/65
+        """
+        pass
+
+    def query_logistics(self):
+        """
+        快递查询
+        :docs: https://alapi.cn/api/view/63
+        """
+        pass
+
+    def get_news_to_day(self):
+        """
+        每日60秒早报
+        :docs: https://alapi.cn/api/view/93
+        """
+        pass
+
+
+script = Spider()
+# print(script.help_())
+# print(Spider().get_healthy_travel('苏州', '南昌'))
+# print(script.get_healthy_travel('苏州', '南昌'))
