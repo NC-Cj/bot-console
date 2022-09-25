@@ -110,9 +110,7 @@ class Spider:
         result = request('POST', url, params=payload, headers=self.headers).json()
         if result['code'] == 200:
             new_state = result['data']['info'][-1]
-            msg = f"⏰ 最新更新时间：{new_state['time']}\n📦 {new_state['content']}"
-
-            return msg
+            return f"⏰ 最新更新时间：{new_state['time']}\n📦 {new_state['content']}"
 
     def get_news_to_day(self):
         """

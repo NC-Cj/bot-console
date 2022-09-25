@@ -20,6 +20,7 @@ by = {
     '早报': script.get_news_to_day,
 }
 
+
 # room_wxid = "48024453345@chatroom"  # test群
 
 
@@ -31,7 +32,7 @@ by = {
 def on_recv_text_msg(wechat_instance: ntchat.WeChat, message):
     data = message["data"]
     from_wxid = data["from_wxid"]
-    room_wxid =  data["room_wxid"]
+    room_wxid = data["room_wxid"]
     self_wxid = wechat_instance.get_login_info()["wxid"]
     sender = wechat_instance.get_contact_detail(from_wxid)['nickname']
 
