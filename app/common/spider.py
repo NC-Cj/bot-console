@@ -17,13 +17,20 @@ class Spider:
             '早报',
         ]
 
+    @staticmethod
+    def other(key):
+        url = f'https://cn.bing.com/search?q="{key}"&FORM=BESBTB'
+        return f'😢没有该指令，已自动根据你的指令搜索到如下内容，请点击查看\n{url}'
+
+    @staticmethod
+    def send(user_id, msg):
+        from app.models.user import User
+        if wxid := User().get_user_wxid(int(user_id)):
+            return wxid, msg
+
     def help_(self):
         return f'🚩 命令格式：/命令名称\n🚩 注意：命令带有下划线请忽略填写\n🚩 命令列表：{self.command_list}'
 
-    def other(self, key):
-        url = f'https://cn.bing.com/search?q="{key}"&FORM=BESBTB'
-        return f'😢没有该指令，已自动根据你的指令搜索到如下内容，请点击查看\n{url}'
-    
     def query_virus_cities(self, province, city=None, county=None):
         """
         疫情风险地区查询
