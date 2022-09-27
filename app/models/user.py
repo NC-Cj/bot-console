@@ -7,7 +7,7 @@ class User(DataBase):
 
     def __init__(self):
         super().__init__()
-        self.conn_str = "mysql+pymysql://root:admin@localhost:3306/bot_schema"
+        self.conn_str = MYSQL_CONN_STR
         self.table = Table(
             'user', MetaData(),
             Column('id', Integer, primary_key=True, autoincrement=True),
@@ -45,6 +45,3 @@ class User(DataBase):
             return res[0][0]
 
         return False
-
-
-print(User().get_user_id('wxid_rfmdl29r87jh22'))

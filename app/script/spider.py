@@ -1,10 +1,9 @@
 from requests import request
-
-from app.models.city import City
+from selenium.webdriver.common.by import By
+from selenium.webdriver import Chrome
 
 
 class Spider:
-    token = "EOk6j38PELxUwJy8"
 
     def __init__(self):
         self.headers = {'Content-Type': "application/x-www-form-urlencoded"}
@@ -143,3 +142,29 @@ class Spider:
 
 
 script = Spider()
+
+
+class BySpiderCommand:
+    By = {
+        'help': script.help_,
+        'other': script.other,
+        'send': script.send,
+        '疫情查询': script.query_virus_cities,
+        '出行防疫': script.get_healthy_travel,
+        '天气': script.get_weather,
+        '快递': script.query_logistics,
+        '早报': script.get_news_to_day,
+    }
+
+    # By
+
+# By.XPATH
+# driver = Chrome()
+# driver.find_element()
+/help-xxx-xxx-xxxx-xxxxxxx
+cmd: help
+parms: [...]
+
+script.cmd(parms)
+
+BySpiderCommand.

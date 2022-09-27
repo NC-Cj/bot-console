@@ -7,8 +7,7 @@ class City(DataBase):
 
     def __init__(self):
         super().__init__()
-        # self.conn_str = 'sqlite:///city.db'
-        self.conn_str = "mysql+pymysql://root:admin@localhost:3306/new_schema"
+        self.conn_str = MYSQL_CONN_STR
         self.table = Table(
             'city', MetaData(),
             Column('id', Integer, primary_key=True, autoincrement=True),

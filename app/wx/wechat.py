@@ -1,17 +1,14 @@
-# -*- coding: utf-8 -*-
 import sys
 
 import ntchat
 
+from app.common.tools import get_msg
+from app.config import LISTEN_LIST, BOT_ADMIN_NICKNAME, MESSAGE_RECEPTION_GROUP, ADMIN_WXID
+from app.main import wechat
 from app.models.user import User
 
 sys.path.append("../..")
-from app.common import script
 
-wechat = ntchat.WeChat()
-
-# 打开pc微信, smart: 是否管理已经登录的微信
-wechat.open(smart=True)
 by = {
     'help': script.help_,
     'other': script.other,
@@ -22,21 +19,6 @@ by = {
     '快递': script.query_logistics,
     '早报': script.get_news_to_day,
 }
-
-message_reception_group = "48024453345@chatroom"  # test群
-admin_wxid = 'wxid_auv3381tqzbz22'
-bot_admin_nickname = 'Admin'
-
-
-# room_wxid = "17733202318@chatroom"  # 家族企业
-
-def get_msg(methods_name, params):
-    try:
-        msg = by[methods_name](*params)
-    except KeyError:
-        msg = by['other'](methods_name)
-
-    return msg
 
 
 # 注册消息回调
@@ -53,19 +35,18 @@ def on_recv_text_msg(wechat_instance: ntchat.WeChat, message):
         res = wechat_instance.get_contact_detail(from_wxid)
         User().push(from_wxid, res['account'], res['remark'])
 
-    # if from_wxid == 'wxid_auv3381tqzbz22' and room_wxid == '':
-    if from_wxid == 'wxid_rfmdl29r87jh22' and room_wxid == '':
+    if from_wxid in LISTEN_LIST and room_wxid == '':
         msg = data['msg']
         user_id = User().get_user_id(from_wxid)
 
         if user_id is False:
             user_id = '数据库中没有该账号id, 不可转发消息'
 
-        msg = f'@{bot_admin_nickname}\nFrom：{remark}\nuserID：{user_id}\nmsg：{msg}'
+        msg = f'@{BOT_ADMIN_NICKNAME}\nFrom：{remark}\nuserID：{user_id}\nmsg：{msg}'
         wechat_instance.send_room_at_msg(
-            message_reception_group,
+            MESSAGE_RECEPTION_GROUP,
             msg,
-            [admin_wxid]
+            [ADMIN_WXID]
         )
 
     if data['msg'].startswith('/') and data['room_wxid'] == room_wxid and from_wxid != self_wxid:
@@ -81,11 +62,3 @@ def on_recv_text_msg(wechat_instance: ntchat.WeChat, message):
         else:
             msg = get_msg(methods_name, params)
             wechat_instance.send_room_at_msg(room_wxid, f'@{sender}\n{msg}', [from_wxid])
-
-
-try:
-    while True:
-        pass
-except KeyboardInterrupt:
-    ntchat.exit_()
-    sys.exit()
