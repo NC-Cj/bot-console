@@ -1,9 +1,13 @@
+import sys
+
 from requests import request
-from selenium.webdriver.common.by import By
-from selenium.webdriver import Chrome
+
+sys.path.append('../../')
+from app.config import TOKEN
 
 
 class Spider:
+    token = TOKEN
 
     def __init__(self):
         self.headers = {'Content-Type': "application/x-www-form-urlencoded"}
@@ -21,13 +25,7 @@ class Spider:
         url = f'https://cn.bing.com/search?q="{key}"&FORM=BESBTB'
         return f'😢没有该指令，已自动根据你的指令搜索到如下内容，请点击查看\n{url}'
 
-    @staticmethod
-    def send(user_id, msg):
-        from app.models.user import User
-        if wxid := User().get_user_wxid(int(user_id)):
-            return wxid, msg
-
-    def help_(self):
+    def help_(self, *args):
         return f'🚩 命令格式：/命令名称\n🚩 注意：命令带有下划线请忽略填写\n🚩 命令列表：{self.command_list}'
 
     def query_virus_cities(self, province, city=None, county=None):
@@ -56,31 +54,6 @@ class Spider:
             msg = f"{msg}⚠ 存在中风险地区：{result['data']['middle_count']}个\n最新发布时间：{result['data']['end_update_time']}"
 
             return msg
-
-    def get_healthy_travel(self, from_, to):
-        """
-        出行防疫政策指南
-        :docs: https://alapi.cn/api/view/87
-        """
-        table = City()
-        from_id = table.get_city_id(from_)
-        to_id = table.get_city_id(to)
-
-        url = "https://v2.alapi.cn/api/springTravel/query"
-        payload = {
-            'token': self.token,
-            'from': from_id,
-            'to': to_id
-        }
-
-        result = request('POST', url, params=payload, headers=self.headers).json()
-        if result['code'] == 200:
-            out_desc = result['data']['from_info']['out_desc']
-            out_code_name = result['data']['from_info']['health_code_name']
-            in_desc = result['data']['to_info']['low_in_desc']
-            in_code_name = result['data']['to_info']['health_code_name']
-
-            return f"🌏 {from_}出站：\n📕 健康码：{out_code_name}\n🚆 {out_desc}\n🌏 {to}进站：\n📕 健康码：{in_code_name}\n🚆 {in_desc}\n"
 
     def get_weather(self, city=None):
         """
@@ -141,30 +114,13 @@ class Spider:
             return filename
 
 
-script = Spider()
-
-
 class BySpiderCommand:
+    script = Spider()
     By = {
         'help': script.help_,
         'other': script.other,
-        'send': script.send,
         '疫情查询': script.query_virus_cities,
-        '出行防疫': script.get_healthy_travel,
         '天气': script.get_weather,
         '快递': script.query_logistics,
         '早报': script.get_news_to_day,
     }
-
-    # By
-
-# By.XPATH
-# driver = Chrome()
-# driver.find_element()
-/help-xxx-xxx-xxxx-xxxxxxx
-cmd: help
-parms: [...]
-
-script.cmd(parms)
-
-BySpiderCommand.

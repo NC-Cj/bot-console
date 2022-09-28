@@ -1,0 +1,3 @@
+ntchat==0.1.13
+requests==2.27.1
+ruamel.yaml==1.0.0
