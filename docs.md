@@ -29,3 +29,7 @@
 - 可以自定义脚本命令，参考script/spider.py文件格式，同时记得同步修改配置文件（yaml）
 
 - 可以机器人脚本，暂无参考
+
+## 添加开发者微信进入交流群
+
+![](C:\Users\CJ\AppData\Roaming\marktext\images\2022-09-29-13-59-29-image.png)
