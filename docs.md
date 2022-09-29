@@ -32,4 +32,4 @@
 
 ## 添加开发者微信进入交流群
 
-![](C:\Users\CJ\AppData\Roaming\marktext\images\2022-09-29-13-59-29-image.png)
+![](https://github.com/CJ-from-LosSantos/bot-console/blob/release/%E4%BA%A4%E6%B5%81%E7%BE%A4.jpg)
