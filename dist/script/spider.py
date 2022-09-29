@@ -55,7 +55,7 @@ class Spider:
         出行防疫政策指南
         :docs: https://alapi.cn/api/view/87
         """
-        pass
+        return '该接口已取消'
         # table = City()
         # from_id = table.get_city_id(from_)
         # to_id = table.get_city_id(to)

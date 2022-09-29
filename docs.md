@@ -1,6 +1,7 @@
 # 使用方法
 
 ## 支持的微信版本下载 [pc微信客户端](https://github.com/tom-snow/wechat-windows-versions/releases/download/v3.6.0.18/WeChatSetup-3.6.0.18.exe)
+
 ## 初始化
 
 1. 下载代码后解压

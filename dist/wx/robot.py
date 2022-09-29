@@ -34,11 +34,15 @@ def on_recv_text_msg(wechat_instance: ntchat.WeChat, message):
         methods_name = data['msg'].strip('/').split('-')[0]
         params = data['msg'].strip('/').split('-')[1:]
 
-        if methods_name in ['早报']:
-            imag = script[methods_name]()
-            wechat_instance.send_image(room_wxid, imag)
-        else:
-            msg = script[methods_name](params)
+        try:
+            if methods_name in ['早报']:
+                imag = script[methods_name]()
+                wechat_instance.send_image(room_wxid, imag)
+            else:
+                msg = script[methods_name](params)
+                wechat_instance.send_room_at_msg(room_wxid, f'@{sender}\n{msg}', [from_wxid])
+        except KeyError:
+            msg = script['other'](methods_name)
             wechat_instance.send_room_at_msg(room_wxid, f'@{sender}\n{msg}', [from_wxid])
 
 
