@@ -13,7 +13,7 @@ if file is not None:
 
     MainModel = ''
     model = load_source(MainModel, config['script']['fileName'])
-    script = getattr(model, config['script']['bySet']).By
+    script = getattr(model, config['script']['bySet'])().By
 
     ntchat.set_wechat_exe_path(wechat_version='3.6.0.18')
     wechat = ntchat.WeChat()

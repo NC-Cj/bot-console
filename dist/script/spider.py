@@ -6,14 +6,6 @@ class Spider:
 
     def __init__(self):
         self.headers = {'Content-Type': "application/x-www-form-urlencoded"}
-        self.command_list = [
-            'help',
-            '疫情查询',
-            '出行防疫',
-            '天气',
-            '快递',
-            '早报',
-        ]
 
     @staticmethod
     def other(key):
@@ -40,7 +32,7 @@ class Spider:
         return 'api 错误或者失效了'
 
     def help_(self, *args):
-        return f'🚩 命令格式：/命令名称\n🚩 注意：命令带有下划线请忽略填写\n🚩 命令列表：{self.command_list}'
+        return f'🚩 命令格式：/命令名称\n🚩 注意：命令带有下划线请忽略填写\n🚩 命令列表：{list(self.By.keys())}'
 
     def query_virus_cities(self, province, city=None, county=None):
         """
@@ -183,16 +175,19 @@ class Spider:
         return 'api 错误或者失效了'
 
 
-class BySpiderCommand:
-    script = Spider()
-    By = {
-        'help': script.help_,
-        'other': script.other,
-        '疫情查询': script.query_virus_cities,
-        '出行防疫': script.get_healthy_travel,
-        '天气': script.get_weather,
-        '快递': script.query_logistics,
-        '早报': script.get_news_to_day,
-        '吃东西': script.what_to_eat_today,
-        '解梦': script.oneiromancy,
-    }
+class BySpiderCommand(Spider):
+    By = None
+
+    def __init__(self):
+        super().__init__()
+        self.By = {
+            'help': self.help_,
+            'other': self.other,
+            '疫情查询': self.query_virus_cities,
+            '出行防疫': self.get_healthy_travel,
+            '天气': self.get_weather,
+            '快递': self.query_logistics,
+            '早报': self.get_news_to_day,
+            '吃东西': self.what_to_eat_today,
+            '解梦': self.oneiromancy,
+        }
