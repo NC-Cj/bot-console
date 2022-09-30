@@ -20,6 +20,25 @@ class Spider:
         url = f'https://cn.bing.com/search?q="{key}"&FORM=BESBTB'
         return f'😢没有该指令，已自动根据你的指令搜索到如下内容，请点击查看\n{url}'
 
+    @staticmethod
+    def what_to_eat_today(*args):
+        """
+        今天吃什么
+        :docs: https://www.apispace.com/eolink/api/eat222/apiDocument
+        """
+        url = "https://eolink.o.apispace.com/eat222/api/v1/forward/chishenme"
+        payload = {"size": "3"}
+        headers = {
+            "X-APISpace-Token": "zbxmug9fyd25pvq7b37urfl2yqm46f0g",
+            "Authorization-Type": "apikey"
+        }
+
+        result = request('GET', url, params=payload, headers=headers).json()
+        if result['code'] == 200:
+            return f'亲~，今日推荐的食谱，三选一吧🥙:\n【{result["data"]}】'
+
+        return 'api 错误或者失效了'
+
     def help_(self, *args):
         return f'🚩 命令格式：/命令名称\n🚩 注意：命令带有下划线请忽略填写\n🚩 命令列表：{self.command_list}'
 
@@ -49,6 +68,8 @@ class Spider:
             msg = f"{msg}⚠ 存在中风险地区：{result['config']['middle_count']}个\n最新发布时间：{result['config']['end_update_time']}"
 
             return msg
+
+        return 'api 错误或者失效了'
 
     def get_healthy_travel(self, from_, to):
         """
@@ -95,6 +116,8 @@ class Spider:
 
             return msg
 
+        return 'api 错误或者失效了'
+
     def query_logistics(self, number):
         """
         快递查询
@@ -111,6 +134,8 @@ class Spider:
         if result['code'] == 200:
             new_state = result['config']['info'][-1]
             return f"⏰ 最新更新时间：{new_state['time']}\n📦 {new_state['content']}"
+
+        return 'api 错误或者失效了'
 
     def get_news_to_day(self):
         """
@@ -134,6 +159,29 @@ class Spider:
 
             return filename
 
+        return 'api 错误或者失效了'
+
+    def oneiromancy(self, key):
+        """
+        周公解梦
+        :docs: https://www.apispace.com/eolink/api/zgjm/guidence/
+        """
+        url = "https://eolink.o.apispace.com/zgjm/common/dream/searchDreamDetail"
+        payload = {"keyword": key}
+        headers = {
+            "X-APISpace-Token": "zbxmug9fyd25pvq7b37urfl2yqm46f0g",
+            "Authorization-Type": "apikey",
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        result = request('POST', url, data=payload, headers=headers).json()
+        if result['statusCode'] == '000000':
+            contents = result["result"]
+            msg = ''.join(f'关键字：{key}\n内容：{c["content"]}' for c in contents)
+
+            return msg
+
+        return 'api 错误或者失效了'
+
 
 class BySpiderCommand:
     script = Spider()
@@ -145,4 +193,10 @@ class BySpiderCommand:
         '天气': script.get_weather,
         '快递': script.query_logistics,
         '早报': script.get_news_to_day,
+        '吃东西': script.what_to_eat_today,
+        '解梦': script.oneiromancy,
     }
+
+
+script = Spider()
+print(script.oneiromancy('分手'))
