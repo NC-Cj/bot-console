@@ -196,7 +196,3 @@ class BySpiderCommand:
         '吃东西': script.what_to_eat_today,
         '解梦': script.oneiromancy,
     }
-
-
-script = Spider()
-print(script.oneiromancy('分手'))
