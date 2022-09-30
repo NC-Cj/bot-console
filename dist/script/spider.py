@@ -102,7 +102,7 @@ class Spider:
 
         result = request('POST', url, params=payload, headers=self.headers).json()
         if result['code'] == 200:
-            hour_list = result['config']['hour']
+            hour_list = result['data']['hour']
             msg = ''.join(f"⏰ {row['time'].split()[-1]} - {row['wea']} - {row['temp']}°\n" for row in hour_list)
             msg = f'今日早晨-明日早晨\n{msg}'
 
