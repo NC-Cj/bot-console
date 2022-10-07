@@ -1,3 +1,5 @@
+import os
+
 from requests import request
 
 
@@ -144,12 +146,12 @@ class Spider:
         if result['code'] == 200:
             image_url = result['data']['image']
             c = request('GET', image_url).content
-            filename = r'D:\GI\network-tools\images\zaobao.png'
+            file = f'{os.path.join(os.getcwd(), "images")}\zaobao.png'
 
-            with open(filename, 'wb') as f:
+            with open(file, 'wb') as f:
                 f.write(c)
 
-            return filename
+            return file
 
         return 'api 错误或者失效了'
 
@@ -168,9 +170,7 @@ class Spider:
         result = request('POST', url, data=payload, headers=headers).json()
         if result['statusCode'] == '000000':
             contents = result["result"]
-            msg = ''.join(f'关键字：{key}\n内容：{c["content"]}' for c in contents)
-
-            return msg
+            return ''.join(f'关键字：{key}\n内容：{c["content"]}' for c in contents)
 
         return 'api 错误或者失效了'
 
