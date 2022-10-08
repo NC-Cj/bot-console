@@ -1,5 +1,5 @@
 import os
-
+from urllib.parse import quote
 from requests import request
 
 
@@ -11,7 +11,7 @@ class Spider:
 
     @staticmethod
     def other(key):
-        url = f'https://cn.bing.com/search?q="{key}"&FORM=BESBTB'
+        url = f'https://cn.bing.com/search?q={quote(key, "utf-8")}&FORM=BESBTB'
         return f'😢没有该指令，已自动根据你的指令搜索到如下内容，请点击查看\n{url}'
 
     @staticmethod
