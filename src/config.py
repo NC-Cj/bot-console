@@ -1,9 +1,10 @@
 TOKEN = "EOk6j38PELxUwJy8"
 
 CONFIG_YML = {
-    'listenRoomList': ['wxid_rfmdl29r87jh22'],
+    'listenRoomList': [],
+    'listenWeChatIdList': [],
     'debug': False,
-    'root': './wx/robot.py',
+    'root': '填写bot启动文件路径（包含文件名）',
     'script': {
         'fileName': './script/spider.py',
         'bySet': 'BySpiderCommand'
