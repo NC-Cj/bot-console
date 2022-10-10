@@ -26,25 +26,62 @@ else:
 def on_recv_text_msg(wechat_instance: ntchat.WeChat, message):
     data = message["data"]
     from_wxid = data["from_wxid"]
-    room_wxid = config['listenRoomList'] or [data["room_wxid"]]
+    room_wxid = data["room_wxid"]
+
+    listen_room_wxid = set(config['listenRoomList'])
+    listen_user_wxid = set(config['listenWeChatIdList'])
+
     self_wxid = wechat_instance.get_login_info()["wxid"]
     sender = wechat_instance.get_contact_detail(from_wxid)['nickname']
     remark = wechat_instance.get_contact_detail(from_wxid)['remark']
 
-    if data['msg'].startswith('/') and data['room_wxid'] in room_wxid and from_wxid != self_wxid:
-        methods_name = data['msg'].strip('/').split('-')[0]
+    if data['msg'].startswith('/'):
+        zh_methods_name = data['msg'].strip('/').split('-')[0]
         params = data['msg'].strip('/').split('-')[1:]
 
-        try:
-            if methods_name in ['早报']:
-                imag = script[methods_name]()
-                wechat_instance.send_image(data['room_wxid'], imag)
-            else:
-                msg = script[methods_name](params)
-                wechat_instance.send_room_at_msg(data['room_wxid'], f'@{sender}\n{msg}', [from_wxid])
-        except KeyError:
-            msg = script['other'](methods_name)
-            wechat_instance.send_room_at_msg(data['room_wxid'], f'@{sender}\n{msg}', [from_wxid])
+        if room_wxid != '' and from_wxid != self_wxid and room_wxid in listen_room_wxid:
+            _execute_send_engine(
+                wechat_instance,
+                'send_room_at_msg',
+                zh_methods_name,
+                params,
+                room_wxid,
+                sender,
+                [from_wxid]
+            )
+
+        if room_wxid == '' and from_wxid != self_wxid and from_wxid in listen_user_wxid:
+            _execute_send_engine(
+                wechat_instance,
+                'send_text',
+                zh_methods_name,
+                params,
+                from_wxid
+            )
+
+
+def _execute_send_engine(
+        wechat_instance: ntchat.WeChat,
+        by_method: str,
+        callable_methods_key: str,
+        callable_methods_params: str,
+        to_wxid: str,
+        at: str = '',
+        *args,
+        **kwargs
+):
+    try:
+        if callable_methods_key in {'早报'}:
+            imag = script[callable_methods_key]()
+            wechat_instance.send_image(to_wxid, imag)
+        else:
+            msg = script[callable_methods_key](callable_methods_params)
+            if at != '':
+                msg = f'@{at}\n{msg}'
+            getattr(wechat_instance, by_method)(to_wxid, msg, *args, **kwargs)
+    except KeyError:
+        msg = script['other'](callable_methods_key)
+        getattr(wechat_instance, by_method)(to_wxid, msg, *args, **kwargs)
 
 
 try:
