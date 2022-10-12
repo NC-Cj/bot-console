@@ -3,7 +3,7 @@ import os
 from fire import Fire
 from ruamel import yaml
 
-from src import CONFIG_YML
+from src import ROBOT_CONFIGURATION
 
 
 class Cmd(object):
@@ -20,13 +20,13 @@ class Cmd(object):
                 `02` -> group\n
                 `03` -> individual & group
         """
-        CONFIG_YML.update({
+        ROBOT_CONFIGURATION.update({
             'name': name,
             'debug': debug if isinstance(debug, bool) else True,
             'template': template
         })
         with open(f'./{name}.yml', 'w', encoding='utf-8') as ym:
-            yaml.dump(CONFIG_YML, ym, allow_unicode=True, Dumper=yaml.RoundTripDumper)
+            yaml.dump(ROBOT_CONFIGURATION, ym, allow_unicode=True, Dumper=yaml.RoundTripDumper)
 
         print('Please wait, the package is downloading...')
         os.makedirs('./images/', exist_ok=True)
