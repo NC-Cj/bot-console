@@ -16,15 +16,23 @@
 
 - 下载对应版本的[微信客户端](https://github.com/tom-snow/wechat-windows-versions/releases/download/v3.6.0.18/WeChatSetup-3.6.0.18.exe)
 
+- 注意事项：新初始化的机器人配置文件：xxx.yml中，你需要手动填写listenRoomList（监听的房间号）、listenWeChatIdList（监听的个人微信号）、root（机器人启动文件路径，包含文件名）三个参数
+
+- 示例图：
+  
+  ![](https://pic1.imgdb.cn/item/6352140116f2c2beb19f6bea.jpg)
+  
+  ![](https://pic1.imgdb.cn/item/6352142616f2c2beb19f901e.jpg)
+
 - 初始化
   
   1. 下载代码后解压
-  2. 在有`Carl.exe`的目录下进入终端，执行`Carl init test_robot`，建议第一次使用debug，cmd：`Carl init --debug test_robot`
-  3. 正常情况下初始化命令执行成功会生成了一些机器人启动的文件
+  2. 在有`Carl.exe`的目录下进入终端，执行`Carl init --help`来查看指令参数和帮助的示例代码。你想快速开始请直接输入`Carl init -n test_robot`，默认debug模式。
+  3. 正常情况下初始化命令执行成功会生成了一些机器人启动的文件，指定`--name`参数，后面的就是机器人启动文件，例如`Carl init -n test_robot`，那么你会在当前文件夹下看到test_robot.py文件
 
 - 启动
   
-  1. 在有`Carl.exe`的目录下进入终端，执行`Carl start test_robot`如果您没有登录pc端微信，他将会弹出登录窗口，扫描即可，随后机器人将管控您的微信 (如果您已在pc端登陆，极有可能也会弹出扫码窗口，忽略即可)
+  1. 在有`Carl.exe`的目录下进入终端，执行`Carl start`如果您没有登录pc端微信，他将会弹出登录窗口，扫描即可，随后机器人将管控您的微信 (如果您已在pc端登陆，极有可能也会弹出扫码窗口，忽略即可)
   
   2. 验证机器人是否成功，在包含被机器人管控的群组中输入`/help`发送，将会收到机器人回复。注意：pc端登录的微信号是机器人，测试应该用另一个微信向机器人发送指令消息才会得到回复，如果未收到回复，请尝试退出微信以启动机器人后弹出的扫码界面扫码进入
 
@@ -37,6 +45,14 @@
   1. 可以自定义脚本命令，参考script/spider.py文件格式，同时记得同步修改配置文件（yaml）
   
   2. 可以自定义爬虫或者开放接口提供指令给机器人，参考script下的spider.py
+
+## FQ
+
+关于包问题：
+
+- 启动机器人后出现模块包未找到问题，请在requirements.txt中找到对应的自行配置镜像源下载（控制台默认使用清华源）
+
+- 可以监听消息，但是出现转发消息erro情况，检查配置文件的监听对象是否填写正确，wxid在debug中可以查看到的群、个人的发送消息的wxid、roomid
 
 ## 添加开发者微信进入交流群
 
