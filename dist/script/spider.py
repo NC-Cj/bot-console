@@ -1,5 +1,6 @@
 import os
 from urllib.parse import quote
+
 from requests import request
 
 
@@ -30,6 +31,53 @@ class Spider:
         result = request('GET', url, params=payload, headers=headers).json()
         if result['code'] == 200:
             return f'亲~，今日推荐的食谱，三选一吧🥙:\n【{result["data"]}】'
+
+        return 'api 错误或者失效了'
+
+    @staticmethod
+    def get_healthy_travel(self, from_, to):
+        """
+        出行防疫政策指南
+        :docs: https://alapi.cn/api/view/87
+        """
+        return '该接口已取消'
+        # table = City()
+        # from_id = table.get_city_id(from_)
+        # to_id = table.get_city_id(to)
+        #
+        # url = "https://v2.alapi.cn/api/springTravel/query"
+        # payload = {
+        #     'token': self.token,
+        #     'from': from_id,
+        #     'to': to_id
+        # }
+        #
+        # result = request('POST', url, params=payload, headers=self.headers).json()
+        # if result['code'] == 200:
+        #     out_desc = result['config']['from_info']['out_desc']
+        #     out_code_name = result['config']['from_info']['health_code_name']
+        #     in_desc = result['config']['to_info']['low_in_desc']
+        #     in_code_name = result['config']['to_info']['health_code_name']
+        #
+        #     return f"🌏 {from_}出站：\n📕 健康码：{out_code_name}\n🚆 {out_desc}\n🌏 {to}进站：\n📕 健康码：{in_code_name}\n🚆 {in_desc}\n"
+
+    @staticmethod
+    def oneiromancy(self, key):
+        """
+        周公解梦
+        :docs: https://www.apispace.com/eolink/api/zgjm/guidence/
+        """
+        url = "https://eolink.o.apispace.com/zgjm/common/dream/searchDreamDetail"
+        payload = {"keyword": key}
+        headers = {
+            "X-APISpace-Token": "zbxmug9fyd25pvq7b37urfl2yqm46f0g",
+            "Authorization-Type": "apikey",
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        result = request('POST', url, data=payload, headers=headers).json()
+        if result['statusCode'] == '000000':
+            contents = result["result"]
+            return ''.join(f'关键字：{key}\n内容：{c["content"]}' for c in contents)
 
         return 'api 错误或者失效了'
 
@@ -64,32 +112,6 @@ class Spider:
             return msg
 
         return 'api 错误或者失效了'
-
-    def get_healthy_travel(self, from_, to):
-        """
-        出行防疫政策指南
-        :docs: https://alapi.cn/api/view/87
-        """
-        return '该接口已取消'
-        # table = City()
-        # from_id = table.get_city_id(from_)
-        # to_id = table.get_city_id(to)
-        #
-        # url = "https://v2.alapi.cn/api/springTravel/query"
-        # payload = {
-        #     'token': self.token,
-        #     'from': from_id,
-        #     'to': to_id
-        # }
-        #
-        # result = request('POST', url, params=payload, headers=self.headers).json()
-        # if result['code'] == 200:
-        #     out_desc = result['config']['from_info']['out_desc']
-        #     out_code_name = result['config']['from_info']['health_code_name']
-        #     in_desc = result['config']['to_info']['low_in_desc']
-        #     in_code_name = result['config']['to_info']['health_code_name']
-        #
-        #     return f"🌏 {from_}出站：\n📕 健康码：{out_code_name}\n🚆 {out_desc}\n🌏 {to}进站：\n📕 健康码：{in_code_name}\n🚆 {in_desc}\n"
 
     def get_weather(self, city=None):
         """
@@ -152,25 +174,6 @@ class Spider:
                 f.write(c)
 
             return file
-
-        return 'api 错误或者失效了'
-
-    def oneiromancy(self, key):
-        """
-        周公解梦
-        :docs: https://www.apispace.com/eolink/api/zgjm/guidence/
-        """
-        url = "https://eolink.o.apispace.com/zgjm/common/dream/searchDreamDetail"
-        payload = {"keyword": key}
-        headers = {
-            "X-APISpace-Token": "zbxmug9fyd25pvq7b37urfl2yqm46f0g",
-            "Authorization-Type": "apikey",
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-        result = request('POST', url, data=payload, headers=headers).json()
-        if result['statusCode'] == '000000':
-            contents = result["result"]
-            return ''.join(f'关键字：{key}\n内容：{c["content"]}' for c in contents)
 
         return 'api 错误或者失效了'
 
